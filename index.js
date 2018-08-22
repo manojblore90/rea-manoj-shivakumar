@@ -6,30 +6,30 @@ const http = require('http');
 //const fs = require("fs");
 
 //define the port number here
-const port = 3000;
+const port = 5000;
 
 //Creating and running server to receive POST request
 const server = http.createServer((req, res) => {
     //Set response content type
     res.setHeader('content-type', 'application/json');
-    if (req.method === 'POST') {
-        storeRequestData(req, result => {
-            //console.log(result);
-            if (result == 'Error') {
-                res.writeHead(400);
-                const errorMsg = {
-                    "error": "Could not decode request: JSON parsing failed"
-                }
-                res.end(JSON.stringify(errorMsg));
-            }
-            else {
-                res.end(result);
-            }
-        });
+if (req.method === 'POST') {
+    storeRequestData(req, result => {
+        //console.log(result);
+        if (result == 'Error') {
+        res.writeHead(400);
+        const errorMsg = {
+            "error": "Could not decode request: JSON parsing failed"
+        }
+        res.end(JSON.stringify(errorMsg));
     }
-    else {
-        res.end(`Error storing data`);
+else {
+        res.end(result);
     }
+});
+}
+else {
+    res.end(`Error storing data`);
+}
 });
 
 function storeRequestData(request, callback) {
@@ -39,43 +39,43 @@ function storeRequestData(request, callback) {
         let requestData = '';
         request.on('data', payload => {
             requestData += payload;
-            try {
-                JSON.parse(payload);
-            } catch (e) {
-                return callback('Error');
-            }
-        });
+        try {
+            JSON.parse(payload);
+        } catch (e) {
+            return callback('Error');
+        }
+    });
         request.on('end', () => {
             try {
                 JSON.parse(requestData);
-                //Writing payload to file for Backup
+        //Writing payload to file for Backup
 
-                //Uncomment the following lines if Backup is required and make sure to create a 'data.json' file 
-                //fs.appendFileSync("data.json", requestData, function (err) {
-                //    if (err) throw err;
-                //    console.log('Saved!');
-                //});
+        //Uncomment the following lines if Backup is required and make sure to create a 'data.json' file
+        //fs.appendFileSync("data.json", requestData, function (err) {
+        //    if (err) throw err;
+        //    console.log('Saved!');
+        //});
 
-                //Creating object to build response data
-                const data = JSON.parse(requestData);
-                const payloadData = data.payload;
-                const tempObj = {};
-                const key = 'response';
-                tempObj[key] = [];
-                payloadData.forEach(function (entry) {
-                    const data = {
-                        concataddress: entry.address.buildingNumber + ' ' + entry.address.street + ' ' + entry.address.suburb + ' ' + entry.address.state + ' ' + entry.address.postcode,
-                        type: entry.type,
-                        workflow: entry.workflow
-                    }
-                    tempObj[key].push(data);
-                });
-                //console.log(JSON.stringify(tempObj));
-                callback(JSON.stringify(tempObj));
-            } catch (e) {
-                console.log(e);
+        //Creating object to build response data
+        const data = JSON.parse(requestData);
+        const payloadData = data.payload;
+        const tempObj = {};
+        const key = 'response';
+        tempObj[key] = [];
+        payloadData.forEach(function (entry) {
+            const data = {
+                concataddress: entry.address.buildingNumber + ' ' + entry.address.street + ' ' + entry.address.suburb + ' ' + entry.address.state + ' ' + entry.address.postcode,
+                type: entry.type,
+                workflow: entry.workflow
             }
+            tempObj[key].push(data);
         });
+        //console.log(JSON.stringify(tempObj));
+        callback(JSON.stringify(tempObj));
+    } catch (e) {
+            console.log(e);
+        }
+    });
     }
     else {
         callback('Invalid request');

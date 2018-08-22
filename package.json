@@ -1,8 +1,31 @@
 {
-    "name": "rea-sample",
-    "description": "A sample app for REA",
-    "version": "1.0.0",
-    "engines": {
-      "node": "8.11.4"
-    }
-  }
+  "name": "rea-sample",
+  "version": "1.0.0",
+  "description": "A sample app for REA",
+  "engines": {
+    "node": "8.9.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manojblore90/rea-manoj-shivakumar.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

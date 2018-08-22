@@ -63,12 +63,15 @@ function storeRequestData(request, callback) {
         const key = 'response';
         tempObj[key] = [];
         payloadData.forEach(function (entry) {
-            const data = {
-                concataddress: entry.address.buildingNumber + ' ' + entry.address.street + ' ' + entry.address.suburb + ' ' + entry.address.state + ' ' + entry.address.postcode,
-                type: entry.type,
-                workflow: entry.workflow
+            console.log(entry.workflow == 'completed');
+            if(entry.workflow == 'completed') {
+                const data = {
+                    concataddress: entry.address.buildingNumber + ' ' + entry.address.street + ' ' + entry.address.suburb + ' ' + entry.address.state + ' ' + entry.address.postcode,
+                    type: entry.type,
+                    workflow: entry.workflow
+                };
+                tempObj[key].push(data);
             }
-            tempObj[key].push(data);
         });
         //console.log(JSON.stringify(tempObj));
         callback(JSON.stringify(tempObj));

@@ -6,7 +6,7 @@ const http = require('http');
 //const fs = require("fs");
 
 //define the port number here
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 //Creating and running server to receive POST request
 const server = http.createServer((req, res) => {
